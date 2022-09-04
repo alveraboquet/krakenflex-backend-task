@@ -1,17 +1,24 @@
 import { Outage } from "../types/Outage";
 import { SiteInfo } from "../types/SiteInfo";
-import { fetchOutages } from "../utils/fetchOutages";
-import { fetchSiteInfo } from "../utils/fetchSiteInfo";
+
 import { filterAndEnrichSiteOutages } from "./utils/filterAndEnrichSiteOutages";
-import { sendSiteOutages } from "../utils/sendSiteOutages";
+import { makeKrakenFlexRequest } from "./utils/makeKrakenFlexRequest";
 
 const siteId = "norwich-pear-tree";
 const startDate = "2022-01-01T00:00:00.000Z";
+const baseURL = "https://api.krakenflex.systems/interview-tests-mock-api/v1";
 
 async function postSiteOutages() {
   try {
-    const outages: Outage[] = await fetchOutages();
-    const siteInfo: SiteInfo = await fetchSiteInfo();
+    const outages: Outage[] = await makeKrakenFlexRequest({
+      url: `${baseURL}/outages`,
+      method: "GET",
+    });
+
+    const siteInfo: SiteInfo = await makeKrakenFlexRequest({
+      url: `${baseURL}/site-info/${siteId}`,
+      method: "GET",
+    });
 
     const siteOutages = filterAndEnrichSiteOutages({
       outages,
@@ -19,8 +26,16 @@ async function postSiteOutages() {
       startDate,
     });
 
-    await sendSiteOutages(siteOutages);
-  } catch (error) {}
+    console.log(siteOutages);
+
+    await makeKrakenFlexRequest({
+      url: `${baseURL}/site-info/${siteId}`,
+      method: "POST",
+      body: siteOutages,
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 postSiteOutages();
