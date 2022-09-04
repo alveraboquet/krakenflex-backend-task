@@ -1,0 +1,7 @@
+{
+  "name": "krakenflex-backend-task",
+  "version": "1.0.0",
+  "description": "backend tech task for krakenflex",
+  "main": "index.js",
+  "license": "MIT"
+}
