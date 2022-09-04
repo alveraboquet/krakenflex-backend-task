@@ -12,7 +12,6 @@ export const makeKrakenFlexRequest = async ({
   method: "GET" | "POST";
   body?: object;
 }) => {
-  console.log(body);
   const response = await fetch(url, {
     method,
     // @ts-ignore

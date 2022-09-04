@@ -26,10 +26,8 @@ async function postSiteOutages() {
       startDate,
     });
 
-    console.log(siteOutages);
-
     await makeKrakenFlexRequest({
-      url: `${baseURL}/site-info/${siteId}`,
+      url: `${baseURL}/site-outages/${siteId}`,
       method: "POST",
       body: siteOutages,
     });
