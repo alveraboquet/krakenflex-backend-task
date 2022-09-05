@@ -15,7 +15,7 @@ export const filterAndEnrichSiteOutages = ({
   const siteDeviceIds = siteInfo.devices.map((device) => device.id);
 
   return outages.reduce((filteredOutages: Outage[], outage) => {
-    if (outage.begin > startDate && siteDeviceIds.includes(outage.id)) {
+    if (outage.begin >= startDate && siteDeviceIds.includes(outage.id)) {
       const deviceName = siteInfo.devices.find(
         (device) => device.id === outage.id
       )!.name;
