@@ -15,16 +15,22 @@ async function postSiteOutages() {
       method: "GET",
     });
 
+    console.log(outages.length + " total outages");
+
     const siteInfo: SiteInfo = await makeKrakenFlexRequest({
       url: `${baseURL}/site-info/${siteId}`,
       method: "GET",
     });
+
+    console.log("Site name: " + siteInfo.name);
 
     const siteOutages = filterAndEnrichSiteOutages({
       outages,
       siteInfo,
       startDate,
     });
+
+    console.log(siteOutages.length + " filtered outages");
 
     await makeKrakenFlexRequest({
       url: `${baseURL}/site-outages/${siteId}`,
